@@ -1,7 +1,11 @@
 package Dancer::Plugin::Preprocess::Sass;
 
-use warnings;
 use strict;
+use warnings;
+
+# ABSTRACT: Generate CSS files from Sass/SCSS files
+
+our $VERSION = '0.020'; # VERSION
 
 use Cwd 'abs_path';
 use Dancer ':syntax';
@@ -9,18 +13,10 @@ use Dancer::Plugin;
 use File::Spec::Functions qw(catfile);
 use Text::Sass;
 
-=head1 NAME
-
-Dancer::Plugin::Preprocess::Sass - Generate CSS files from Sass/SCSS files
-
-=cut
-
-our $VERSION = '0.01';
-
 my $settings = plugin_setting;
 
 my $sass = Text::Sass->new;
-my $public_dir = abs_path(setting('public'));
+my $public_dir = abs_path(setting('public') || '');
 
 my $paths;
 
@@ -56,7 +52,7 @@ sub _process_sass_file {
         $method = 'scss2css';
     }
     else {
-        return undef;
+        return;
     }
     
     open (my $f, '<', $sass_file);
@@ -104,6 +100,7 @@ hook before_file_render => sub {
     }
 };
 
+# FIXME: This doesn't allow us to have "/" as path, does it?
 get qr{/($paths_re)/(.*)} => sub {
     my ($path, $css_file) = splat;
     
@@ -151,13 +148,20 @@ get qr{/($paths_re)/(.*)} => sub {
 register_plugin;
 
 1; # End of Dancer::Plugin::Preprocess::Sass
+
 __END__
 
 =pod
 
+=encoding UTF-8
+
+=head1 NAME
+
+Dancer::Plugin::Preprocess::Sass - Generate CSS files from Sass/SCSS files
+
 =head1 VERSION
 
-Version 0.01
+version 0.020
 
 =head1 SYNOPSIS
 
@@ -197,7 +201,7 @@ If set to C<0>, then the CSS files are generated on-the-fly with every request.
 If set to C<1>, the files are generated once and saved, then served as static
 files later on.
 
-The files are saved in the same directory as the Sass/SCSS files, so the system
+CSS files are saved in the same directory as the Sass/SCSS files, so the system
 user that the web application is running as must be allowed to write to that
 directory.
 
@@ -216,75 +220,48 @@ directory of the application.
 
 Default: C<'css'>
 
-=head1 AUTHOR
-
-Michal Wojciechowski, C<< <odyniec at cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-dancer-plugin-preprocess-sass at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Dancer-Plugin-Preprocess-Sass>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Dancer::Plugin::Preprocess::Sass
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Dancer-Plugin-Preprocess-Sass>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Dancer-Plugin-Preprocess-Sass>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Dancer-Plugin-Preprocess-Sass>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Dancer-Plugin-Preprocess-Sass/>
-
-=back
-
-
 =head1 SEE ALSO
 
 =over 4
 
-=item * Sass website
 
-L<http://sass-lang.com/>
 
 =back
 
+* L<http://sass-lang.com/> - Sass website
 
 =head1 ACKNOWLEDGEMENTS
 
 The plugin uses Roger Pettett's L<Text::Sass> module. 
 
+=for :stopwords cpan testmatrix url annocpan anno bugtracker rt cpants kwalitee diff irc mailto metadata placeholders metacpan
 
-=head1 LICENSE AND COPYRIGHT
+=head1 SUPPORT
 
-Copyright 2011 Michal Wojciechowski.
+=head2 Bugs / Feature Requests
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
+Please report any bugs or feature requests through the issue tracker
+at L<https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Sass/issues>.
+You will be notified automatically of any progress on your issue.
 
-See http://dev.perl.org/licenses/ for more information.
+=head2 Source Code
 
+This is open source software.  The code repository is available for
+public review and contribution under the terms of the license.
+
+L<https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Sass>
+
+  git clone https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Sass.git
+
+=head1 AUTHOR
+
+Michal Wojciechowski <odyniec@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by Michal Wojciechowski.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
-

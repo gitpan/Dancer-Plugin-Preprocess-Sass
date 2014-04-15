@@ -1,40 +1,77 @@
+
 use strict;
 use warnings;
-use ExtUtils::MakeMaker;
 
-WriteMakefile(
-    NAME                => 'Dancer::Plugin::Preprocess::Sass',
-    AUTHOR              => q{Michal Wojciechowski <odyniec@cpan.org>},
-    VERSION_FROM        => 'lib/Dancer/Plugin/Preprocess/Sass.pm',
-    ABSTRACT_FROM       => 'lib/Dancer/Plugin/Preprocess/Sass.pm',
-    ($ExtUtils::MakeMaker::VERSION >= 6.3002
-      ? ('LICENSE'=> 'perl')
-      : ()),
-    PL_FILES            => {},
-    PREREQ_PM => {
-        'Dancer' => 1.3070,
-        'Test::More' => 0,
-        'Text::Sass' => 0,
-    },
-    dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => 'Dancer-Plugin-Preprocess-Sass-*' },
+use 5.006;
+
+use ExtUtils::MakeMaker 6.17;
+
+
+
+my %WriteMakefileArgs = (
+  "ABSTRACT" => "Generate CSS files from Sass/SCSS files",
+  "AUTHOR" => "Michal Wojciechowski <odyniec\@cpan.org>",
+  "BUILD_REQUIRES" => {},
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.17"
+  },
+  "DISTNAME" => "Dancer-Plugin-Preprocess-Sass",
+  "EXE_FILES" => [],
+  "LICENSE" => "perl",
+  "NAME" => "Dancer::Plugin::Preprocess::Sass",
+  "PREREQ_PM" => {
+    "Cwd" => 0,
+    "Dancer" => 0,
+    "Dancer::Plugin" => 0,
+    "File::Spec::Functions" => 0,
+    "Text::Sass" => 0,
+    "strict" => 0,
+    "warnings" => 0
+  },
+  "TEST_REQUIRES" => {
+    "ExtUtils::MakeMaker" => 0,
+    "File::Spec" => 0,
+    "File::Temp" => 0,
+    "IO::Handle" => 0,
+    "IPC::Open3" => 0,
+    "List::Util" => 0,
+    "Test::More" => 0
+  },
+  "VERSION" => "0.020",
+  "test" => {
+    "TESTS" => "t/*.t"
+  }
 );
 
-package MY;
 
-sub MY::postamble
-{
-    my $self = shift;
-    
-    return if ! -r $self->{VERSION_FROM};
-    
-    return <<END_MAKE;
-pm_to_blib: README README.pod
-    
-README.pod: $self->{VERSION_FROM}
-\t\@perldoc -uT $self->{VERSION_FROM} > README.pod
+my %FallbackPrereqs = (
+  "Cwd" => 0,
+  "Dancer" => 0,
+  "Dancer::Plugin" => 0,
+  "ExtUtils::MakeMaker" => 0,
+  "File::Spec" => 0,
+  "File::Spec::Functions" => 0,
+  "File::Temp" => 0,
+  "IO::Handle" => 0,
+  "IPC::Open3" => 0,
+  "List::Util" => 0,
+  "Test::More" => 0,
+  "Text::Sass" => 0,
+  "strict" => 0,
+  "warnings" => 0
+);
 
-README: $self->{VERSION_FROM}
-\tpod2text README.pod > README
-END_MAKE
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  delete $WriteMakefileArgs{TEST_REQUIRES};
+  delete $WriteMakefileArgs{BUILD_REQUIRES};
+  $WriteMakefileArgs{PREREQ_PM} = \%FallbackPrereqs;
 }
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
+
