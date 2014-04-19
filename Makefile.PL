@@ -29,6 +29,8 @@ my %WriteMakefileArgs = (
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
+    "Dancer::FileUtils" => 0,
+    "Dancer::Test" => 0,
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
     "File::Temp" => 0,
@@ -37,9 +39,9 @@ my %WriteMakefileArgs = (
     "List::Util" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "0.020",
+  "VERSION" => "0.030",
   "test" => {
-    "TESTS" => "t/*.t"
+    "TESTS" => "t/*.t t/paths/*.t"
   }
 );
 
@@ -47,7 +49,9 @@ my %WriteMakefileArgs = (
 my %FallbackPrereqs = (
   "Cwd" => 0,
   "Dancer" => 0,
+  "Dancer::FileUtils" => 0,
   "Dancer::Plugin" => 0,
+  "Dancer::Test" => 0,
   "ExtUtils::MakeMaker" => 0,
   "File::Spec" => 0,
   "File::Spec::Functions" => 0,

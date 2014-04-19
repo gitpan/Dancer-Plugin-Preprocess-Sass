@@ -3,6 +3,8 @@ abstract: 'Generate CSS files from Sass/SCSS files'
 author:
   - 'Michal Wojciechowski <odyniec@cpan.org>'
 build_requires:
+  Dancer::FileUtils: 0
+  Dancer::Test: 0
   ExtUtils::MakeMaker: 0
   File::Spec: 0
   File::Temp: 0
@@ -30,7 +32,7 @@ no_index:
 provides:
   Dancer::Plugin::Preprocess::Sass:
     file: lib/Dancer/Plugin/Preprocess/Sass.pm
-    version: 0.020
+    version: 0.030
 requires:
   Cwd: 0
   Dancer: 0
@@ -44,4 +46,4 @@ resources:
   bugtracker: https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Sass/issues
   homepage: https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Sass
   repository: https://github.com/odyniec/p5-Dancer-Plugin-Preprocess-Sass.git
-version: 0.020
+version: 0.030

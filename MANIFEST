@@ -9,6 +9,13 @@ dist.ini
 lib/Dancer/Plugin/Preprocess/Sass.pm
 t/00-compile.t
 t/00-report-prereqs.t
+t/paths/app/public/css/bar.scss
+t/paths/app/public/css/sub/bar.css
+t/paths/app/public/css/sub/bar.scss
+t/paths/app/public/foo.scss
+t/paths/app/public/sub/bar.css
+t/paths/app/public/sub/bar.scss
+t/paths/paths.t
 xt/author/critic.t
 xt/author/pod-spell.t
 xt/release/cpan-changes.t

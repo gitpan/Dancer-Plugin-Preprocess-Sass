@@ -16,7 +16,9 @@ my @modules = qw(
   CPAN::Meta::Requirements
   Cwd
   Dancer
+  Dancer::FileUtils
   Dancer::Plugin
+  Dancer::Test
   ExtUtils::MakeMaker
   File::Spec
   File::Spec::Functions
