@@ -1,5 +1,8 @@
 Revision history for Dancer-Plugin-Preprocess-Sass
 
+0.031     2014-04-20
+          Fixed a bug with checking if paths are writable.
+
 0.030     2014-04-19
           Added better path handling.
 

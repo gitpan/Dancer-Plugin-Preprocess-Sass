@@ -5,7 +5,7 @@ use warnings;
 
 # ABSTRACT: Generate CSS files from Sass/SCSS files
 
-our $VERSION = '0.030'; # VERSION
+our $VERSION = '0.031'; # VERSION
 
 use Cwd 'abs_path';
 use Dancer ':syntax';
@@ -32,9 +32,9 @@ my @fs_paths = map { catfile(split('/'), "") } @$paths;
 if ($settings->{save}) {
     # Check if the directories are writable
     for my $path (@fs_paths) {
-        $path = catfile($public_dir, $path);
-        if (!-w $path) {
-            warning __PACKAGE__ . ": Can't write to $path";
+        my $full_path = catfile($public_dir, $path);
+        if (!-w $full_path) {
+            warning __PACKAGE__ . ": Can't write to $full_path";
         }
     }
 }
@@ -166,7 +166,7 @@ Dancer::Plugin::Preprocess::Sass - Generate CSS files from Sass/SCSS files
 
 =head1 VERSION
 
-version 0.030
+version 0.031
 
 =head1 SYNOPSIS
 
